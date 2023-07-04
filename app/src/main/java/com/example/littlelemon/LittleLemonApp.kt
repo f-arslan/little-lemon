@@ -20,7 +20,7 @@ import com.example.littlelemon.ui.screens.onboarding_screen.AppUiState
 fun LittleLemonApp(viewModel: LittleLemonViewModel = viewModel()) {
     val context = LocalContext.current
     LaunchedEffect(Unit) {
-        viewModel.getEmail(context)
+        viewModel.getData(context)
     }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     when (val result = uiState) {

@@ -19,29 +19,33 @@ import com.example.littlelemon.R.drawable.logo
 import com.example.littlelemon.util.Constants.GREEN_DARK
 import com.example.littlelemon.util.Constants.HIGH_PADDING
 import com.example.littlelemon.util.Constants.MAX_PADDING
-import com.example.littlelemon.util.Constants.VERY_HIGH_PADDING
 
 @Composable
-fun LittleLemonTopBar() {
+fun LittleLemonTopBar(isProfileScreen: Boolean = false) {
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Image(
             painter = painterResource(id = logo),
             contentDescription = "App Logo",
             modifier = Modifier.padding(top = HIGH_PADDING, bottom = HIGH_PADDING)
         )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(GREEN_DARK),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Let's get to know you",
-                color = Color.White,
-                fontSize = 20.sp,
-                modifier = Modifier.padding(top = MAX_PADDING, bottom = MAX_PADDING)
-            )
-        }
+        if (!isProfileScreen) AppSubHeader()
+    }
+}
+
+@Composable
+fun AppSubHeader() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(GREEN_DARK),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "Let's get to know you",
+            color = Color.White,
+            fontSize = 20.sp,
+            modifier = Modifier.padding(top = MAX_PADDING, bottom = MAX_PADDING)
+        )
     }
 }
 

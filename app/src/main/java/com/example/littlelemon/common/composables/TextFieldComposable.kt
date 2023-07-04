@@ -2,7 +2,6 @@ package com.example.littlelemon.common.composables
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,7 +11,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TextFieldWithLabel(label: String, textFieldText: String, onTextChange: (String) -> Unit) {
+fun TextFieldWithLabel(
+    label: String,
+    textFieldText: String,
+    onTextChange: (String) -> Unit = {},
+    readOnly: Boolean = false
+) {
     Column(Modifier.fillMaxWidth()) {
         Text(
             text = label,
@@ -22,7 +26,8 @@ fun TextFieldWithLabel(label: String, textFieldText: String, onTextChange: (Stri
         OutlinedTextField(
             value = textFieldText,
             onValueChange = onTextChange,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            readOnly = readOnly
         )
     }
 }
