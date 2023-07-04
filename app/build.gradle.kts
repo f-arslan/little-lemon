@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id ("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -82,6 +83,15 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     // inside local-preference build.gradle
     implementation (libs.androidx.datastore.preferences)
+
+    // Ktor
+    implementation (libs.ktor.client.android)
+    implementation (libs.ktor.client.content.negotiation)
+    implementation (libs.ktor.serialization.kotlinx.json)
+
+    // Room
+    implementation (libs.androidx.room.runtime)
+    kapt (libs.androidx.room.compiler)
 }
 
 kapt {

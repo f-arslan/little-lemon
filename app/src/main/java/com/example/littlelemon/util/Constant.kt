@@ -25,4 +25,6 @@ object Constants {
     val LIGHT_TOMATO = Color(0xFFFBDABB)
     val GREY = Color(0xFFEDEFEE)
     val DARK = Color(0xFF333333)
+
+    const val DB_NAME = "little_lemon"
 }
