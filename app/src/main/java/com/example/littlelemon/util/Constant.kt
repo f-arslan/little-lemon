@@ -25,6 +25,7 @@ object Constants {
     val LIGHT_TOMATO = Color(0xFFFBDABB)
     val GREY = Color(0xFFEDEFEE)
     val DARK = Color(0xFF333333)
-
+    val DARK_GREY = Color(0xFF5b6d67)
     const val DB_NAME = "little_lemon"
+    const val URL = "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json"
 }

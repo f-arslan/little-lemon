@@ -2,14 +2,12 @@ package com.example.littlelemon.ui.screens.onboarding_screen
 
 import android.content.Context
 import android.widget.Toast
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.littlelemon.common.ext.isValidEmail
+import com.example.littlelemon.core.model.DataStoreSingleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,12 +22,10 @@ data class AppUiState(
 )
 
 class OnboardingScreenViewModel() : ViewModel() {
-    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 
     private val _uiState = MutableStateFlow(AppUiState())
     val uiState: StateFlow<AppUiState> = _uiState.asStateFlow()
-
 
     private val firstName
         get() = uiState.value.firstName.trim()
@@ -82,14 +78,12 @@ class OnboardingScreenViewModel() : ViewModel() {
     }
 
     private suspend fun saveToDataStore(context: Context) {
-        context.dataStore.edit { settings ->
+        DataStoreSingleton.getDataStore(context).edit { settings ->
             settings[FIRST_NAME_KEY] = firstName
             settings[LAST_NAME_KEY] = lastName
             settings[EMAIL_KEY] = email
         }
     }
-
-
 
     companion object {
         val FIRST_NAME_KEY = stringPreferencesKey("first_name")

@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">LittleLemon</string>
-    <string name="hero_heading">Little Lemon Chicago</string>
-    <string name="hero_sub_heading">We are family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.</string>
+    <string name="hero_heading">Little Lemon</string>
+    <string name="hero_sub_heading">Chicago</string>
+    <string name="hero_subtitle">We are family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.</string>
+    <string name="order_for_delivery">ORDER FOR DELIVERY!</string>
 </resources>
