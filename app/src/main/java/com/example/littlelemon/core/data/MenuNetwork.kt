@@ -10,4 +10,13 @@ data class MenuNetwork(
     val price: String = "",
     val image: String = "",
     val category: String = ""
-)
+) {
+    fun toMenuNetworkRoom() = MenuNetworkRoom(
+        id = id,
+        title = title,
+        description = description,
+        price = price,
+        image = image,
+        category = category
+    )
+}

@@ -2,9 +2,9 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
-    kotlin("kapt")
-    id("com.google.dagger.hilt.android")
     id ("org.jetbrains.kotlin.plugin.serialization")
+    id("com.google.devtools.ksp")
+    kotlin("kapt")
 }
 
 android {
@@ -75,11 +75,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.runtime.ktx)
-    // Lifecycle utilities for Compose
     implementation(libs.androidx.lifecycle.runtime.compose)
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     // inside local-preference build.gradle
     implementation (libs.androidx.datastore.preferences)
@@ -91,12 +88,14 @@ dependencies {
 
     // Room
     implementation (libs.androidx.room.runtime)
-    kapt (libs.androidx.room.compiler)
+    ksp (libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
     // Glide
     implementation (libs.compose)
+    implementation(libs.androidx.activity.ktx)
 }
-
+// Allow references to generated code
 kapt {
     correctErrorTypes = true
 }

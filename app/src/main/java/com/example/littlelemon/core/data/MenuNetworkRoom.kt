@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class MenuNetworkRoom(
-    @PrimaryKey val id: Int = 0,
+    @PrimaryKey val id: Int = -1,
     val title: String = "",
     val description: String = "",
     val price: String = "",

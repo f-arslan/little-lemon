@@ -2,11 +2,13 @@ package com.example.littlelemon.ui.screens.home_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Room
 import com.example.littlelemon.RequestState
 import com.example.littlelemon.core.Network.Companion.URL
 import com.example.littlelemon.core.data.Menu
 import com.example.littlelemon.core.data.MenuCategory
 import com.example.littlelemon.core.data.MenuNetwork
+import com.example.littlelemon.core.model.LittleLemonDatabase
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.android.Android
@@ -26,8 +28,9 @@ class HomeScreenViewModel : ViewModel() {
             json(contentType = ContentType("text", "plain"))
         }
     }
+
+
     private val _allDishes = MutableStateFlow<RequestState<List<MenuNetwork>>>(RequestState.Idle)
-    val allDishes = _allDishes.asStateFlow()
 
     private val _allDishesWithPhrase = MutableStateFlow<List<MenuNetwork>>(emptyList())
     val allDishesWithPhrase = _allDishesWithPhrase.asStateFlow()
@@ -59,7 +62,7 @@ class HomeScreenViewModel : ViewModel() {
         }
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             filteredDishesFlow.collect { filteredDishes ->
                 _allDishesWithPhrase.value = filteredDishes
             }
@@ -84,5 +87,12 @@ class HomeScreenViewModel : ViewModel() {
             return
         }
         _selectedMenu.value = menu
+    }
+
+
+    private fun initializeRoomDatabase(response: List<MenuNetwork>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            // littleLemonRepository.saveMenu(response.map { it.toMenuNetworkRoom() })
+        }
     }
 }
