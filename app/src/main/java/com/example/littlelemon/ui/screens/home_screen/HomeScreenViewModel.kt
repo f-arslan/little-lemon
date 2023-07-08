@@ -1,13 +1,14 @@
 package com.example.littlelemon.ui.screens.home_screen
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Room
 import com.example.littlelemon.RequestState
 import com.example.littlelemon.core.Network.Companion.URL
 import com.example.littlelemon.core.data.Menu
 import com.example.littlelemon.core.data.MenuCategory
 import com.example.littlelemon.core.data.MenuNetwork
+import com.example.littlelemon.core.model.LittleLemonDao
 import com.example.littlelemon.core.model.LittleLemonDatabase
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -28,7 +29,8 @@ class HomeScreenViewModel : ViewModel() {
             json(contentType = ContentType("text", "plain"))
         }
     }
-
+    private lateinit var database: LittleLemonDatabase
+    private lateinit var littleLemonDao: LittleLemonDao
 
     private val _allDishes = MutableStateFlow<RequestState<List<MenuNetwork>>>(RequestState.Idle)
 
@@ -40,6 +42,7 @@ class HomeScreenViewModel : ViewModel() {
 
     private val _selectedMenu = MutableStateFlow<Menu?>(null)
     val selectedMenu = _selectedMenu.asStateFlow()
+
 
     private val filteredDishesFlow =
         combine(_allDishes, _phrase, _selectedMenu) { allDishesState, phrase, selectedMenu ->
@@ -69,10 +72,12 @@ class HomeScreenViewModel : ViewModel() {
         }
     }
 
-    fun getAllDishes() {
+    fun initialize(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
+            database = LittleLemonDatabase.getInstance(context)
             val response = httpClient.get(URL).body<MenuCategory>().menu
             _allDishes.value = RequestState.Success(response)
+            initializeRoomDatabase(response)
         }
     }
 
@@ -92,7 +97,10 @@ class HomeScreenViewModel : ViewModel() {
 
     private fun initializeRoomDatabase(response: List<MenuNetwork>) {
         viewModelScope.launch(Dispatchers.IO) {
-            // littleLemonRepository.saveMenu(response.map { it.toMenuNetworkRoom() })
+            littleLemonDao = database.LittleLemonDao()
+            if (littleLemonDao.isEmpty()) {
+                littleLemonDao.saveFullMenu(response.map { it.toMenuNetworkRoom() })
+            }
         }
     }
 }

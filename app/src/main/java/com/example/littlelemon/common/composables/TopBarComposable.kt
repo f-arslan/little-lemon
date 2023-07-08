@@ -2,6 +2,7 @@ package com.example.littlelemon.common.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,14 +55,16 @@ fun AppSubHeader() {
     }
 }
 @Composable
-fun HomeTopAppBar() {
+fun HomeTopAppBar(onProfileClick: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth().padding(HIGH_PADDING), horizontalArrangement = Arrangement.SpaceBetween) {
         Box {}
         Image(painter = painterResource(id = logo), contentDescription = "App Icon")
         Image(
             painter = painterResource(id = R.drawable.profile),
             contentDescription = "Profile Icon",
-            modifier = Modifier.size(50.dp)
+            modifier = Modifier.size(50.dp).clickable {
+                onProfileClick()
+            }
         )
     }
 }

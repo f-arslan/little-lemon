@@ -1,6 +1,7 @@
 package com.example.littlelemon.ui.screens.home_screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,12 +26,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -51,9 +52,10 @@ import com.example.littlelemon.util.Constants.VERY_HIGH_PADDING
 import com.example.littlelemon.util.Constants.YELLOW
 
 @Composable
-fun HomeScreenProvider(viewModel: HomeScreenViewModel = viewModel()) {
+fun HomeScreenProvider(viewModel: HomeScreenViewModel = viewModel(), navigate: () -> Unit) {
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
-        viewModel.getAllDishes()
+        viewModel.initialize(context)
     }
     val phrase by viewModel.phrase.collectAsStateWithLifecycle()
     val allDishesWithPhrase by viewModel.allDishesWithPhrase.collectAsStateWithLifecycle()
@@ -65,7 +67,8 @@ fun HomeScreenProvider(viewModel: HomeScreenViewModel = viewModel()) {
         dishes = allDishesWithPhrase,
         onPhraseChange = viewModel::onPhraseChanged,
         onMenuChange = viewModel::onMenuChanged,
-        selectedMenu = selectedMenu
+        selectedMenu = selectedMenu,
+        onProfileClick = navigate
     )
 }
 
@@ -75,13 +78,14 @@ fun HomeScreen(
     dishes: List<MenuNetwork>,
     onPhraseChange: (String) -> Unit,
     onMenuChange: (Menu) -> Unit,
-    selectedMenu: Menu?
+    selectedMenu: Menu?,
+    onProfileClick: () -> Unit,
 ) {
     Scaffold(topBar = {
-        HomeTopAppBar()
+        HomeTopAppBar (onProfileClick)
     }) {
         Column(modifier = Modifier.padding(it)) {
-            HeroSection(phrase, onPhraseChange)
+            HeroSection(phrase, onPhraseChange, onProfileClick)
             MenuBreakDown(onMenuChange, selectedMenu)
             MenuItemList(dishes)
         }
@@ -164,7 +168,7 @@ fun MenuBreakDown(onMenuItemChange: (Menu) -> Unit, selectedMenu: Menu?) {
 }
 
 @Composable
-fun HeroSection(phrase: String, onPhraseChange: (String) -> Unit) {
+fun HeroSection(phrase: String, onPhraseChange: (String) -> Unit, onProfileClick: () -> Unit) {
     Surface(color = GREEN_DARK, contentColor = Color.White) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(
@@ -187,7 +191,7 @@ fun HeroSection(phrase: String, onPhraseChange: (String) -> Unit) {
                 Card(modifier = Modifier.weight(0.3f)) {
                     Image(
                         painter = painterResource(id = R.drawable.profile),
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 }
             }

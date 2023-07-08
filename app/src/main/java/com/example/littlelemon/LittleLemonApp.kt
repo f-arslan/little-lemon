@@ -47,7 +47,7 @@ fun LittleLemonAppScreen(data: AppUiState) {
             navController = navController,
             startDestination = startDestination
         ) {
-            appGraph()
+            appGraph(navController)
         }
     }
 }
